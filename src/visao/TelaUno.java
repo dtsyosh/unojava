@@ -221,6 +221,15 @@ public class TelaUno extends javax.swing.JFrame {
         *   Jogar a carta
         *   Tirar a carta da lista/mão do jogador
         */
+        //---- Joga
+        mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
+        //----
+        //-----Remove a carta da lista e atualiza a imagem do monte
+        listaDireito.remove(listCartasDireito.getSelectedIndex());
+        ImageIcon iconeMonte = mesa.verTopoMonte().getImagem();
+        iconeMonte.setImage(iconeMonte.getImage().getScaledInstance(93,139, Image.SCALE_SMOOTH));
+        imagemMonte.setIcon(iconeMonte);
+        //-----
     }//GEN-LAST:event_btnJogarCartaDireitoActionPerformed
 
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked

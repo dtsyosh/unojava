@@ -9,7 +9,7 @@ public class Jogador {
 
     public Jogador(String nome) {
         this.nome = nome;
-        this.mao = new ArrayList<Carta>();
+        this.mao = new ArrayList();
     }
 
     public void compraCarta(Carta carta) {
@@ -17,7 +17,7 @@ public class Jogador {
     }
 
     public Carta jogarCarta(int indice) {
-        return this.mao.remove(indice - 1);
+        return this.mao.remove(indice);
     }
 
     public String getNome() {
