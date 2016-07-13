@@ -47,12 +47,9 @@ public class TelaUno extends javax.swing.JFrame {
         
         //Carregando as imagens
         ImageIcon iconeBaralho = new ImageIcon(getClass().getResource("/imagens/verso.png"));
-        ImageIcon iconeMonte = mesa.verTopoMonte().getImagem();
-        //Padronizando o tamanho das imagens
-        iconeBaralho.setImage(iconeBaralho.getImage().getScaledInstance(93,139, Image.SCALE_SMOOTH));
-        iconeMonte.setImage(iconeMonte.getImage().getScaledInstance(93,139, Image.SCALE_SMOOTH));
-        imagemBaralho.setIcon(iconeBaralho);
-        imagemMonte.setIcon(iconeMonte);
+              
+        imagemBaralho.setIcon( ajustarImagem(iconeBaralho));
+        imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
         imagemBaralho.setText("");
         imagemMonte.setText("");
     }
@@ -225,19 +222,17 @@ public class TelaUno extends javax.swing.JFrame {
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
         //----
         //-----Remove a carta da lista e atualiza a imagem do monte
-        listaDireito.remove(listCartasDireito.getSelectedIndex());
-        ImageIcon iconeMonte = mesa.verTopoMonte().getImagem();
-        iconeMonte.setImage(iconeMonte.getImage().getScaledInstance(93,139, Image.SCALE_SMOOTH));
-        imagemMonte.setIcon(iconeMonte);
+        listaDireito.remove( listCartasDireito.getSelectedIndex());
+        imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
         //-----
     }//GEN-LAST:event_btnJogarCartaDireitoActionPerformed
 
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
-        jogador.compraCarta(baralho.darCarta());
-        listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size()-1)));
+        jogador.compraCarta( baralho.darCarta());
+        listaDireito.addElement( exibirCarta(jogador.getMao().get(jogador.getMao().size()-1)));
     }//GEN-LAST:event_imagemBaralhoMouseClicked
 
-    public final String exibirCarta(Carta x){	//Função que exibe as informaçães da carta
+    private String exibirCarta(Carta x){	//Função que exibe as informaçães da carta
         if(x instanceof CartaNumero){
             CartaNumero k = (CartaNumero)x;
             return k.getNumero() + " " + k.getCor();
@@ -249,6 +244,11 @@ public class TelaUno extends javax.swing.JFrame {
                     CartaEspecial k = (CartaEspecial)x;
                     return k.getEspecial();
 		 }
+    }
+    
+    private ImageIcon ajustarImagem(ImageIcon imagem){
+        imagem.setImage(imagem.getImage().getScaledInstance(93, 139, Image.SCALE_SMOOTH));
+        return imagem;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
