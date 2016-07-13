@@ -30,7 +30,13 @@ public class Mesa {
             jogador1.compraCarta(this.baralho.darCarta());
             jogador2.compraCarta(this.baralho.darCarta());
         }
-
-        colocaNoTopoMonte(this.baralho.darCarta());
+        
+        while(true){    //Garante que a primeira carta será sempre um número
+            if(this.baralho.getCartas().get(this.baralho.getCartas().size()-1) instanceof CartaNumero){
+                colocaNoTopoMonte(this.baralho.darCarta());
+                break;
+            }else
+                this.baralho.adicionarCartas(this.baralho.darCarta());
+        }
     }
 }
