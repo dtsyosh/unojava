@@ -12,7 +12,7 @@ public class Jogador {
         this.mao = new ArrayList();
     }
 
-    public void compraCarta(Carta carta) {
+    public void comprarCarta(Carta carta) {
         this.mao.add(carta);
     }
 

@@ -34,7 +34,7 @@ public class TelaUno extends javax.swing.JFrame {
         mesa = new Mesa(baralho);
         jogador = new Jogador(JOptionPane.showInputDialog("Digite seu nome"));
         lblNomeJogador.setText(jogador.getNome());
-        computador = new Jogador("Computador");
+        computador = new JogadorIA("Computador");
         //Criando novo jogo
         mesa.iniciarNovoJogo(jogador, computador);
         //Preenchendo listas
@@ -226,7 +226,7 @@ public class TelaUno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnJogarCartaDireitoActionPerformed
 
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
-        jogador.compraCarta( baralho.darCarta());
+        jogador.comprarCarta( baralho.darCarta());
         listaDireito.addElement( exibirCarta(jogador.getMao().get(jogador.getMao().size()-1)));
     }//GEN-LAST:event_imagemBaralhoMouseClicked
 
