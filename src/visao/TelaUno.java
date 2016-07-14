@@ -130,6 +130,7 @@ public class TelaUno extends javax.swing.JFrame {
         });
         spCartas1.setViewportView(listCartasDireito);
 
+        lblNomeJogador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNomeJogador.setText("Nome Jogador");
 
         btnJogarCartaDireito.setText("Jogar Carta");
@@ -145,13 +146,10 @@ public class TelaUno extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(lblNomeJogador)
-                .addContainerGap(99, Short.MAX_VALUE))
             .addComponent(spCartas1)
             .addComponent(btnJogarCartaDireito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnUnoDireito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblNomeJogador, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +186,7 @@ public class TelaUno extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(imagemMonte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(imagemBaralho))
-                .addGap(74, 74, 74)
+                .addGap(98, 98, 98)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );

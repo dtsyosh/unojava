@@ -32,7 +32,7 @@
                   <Component id="imagemMonte" min="-2" max="-2" attributes="0"/>
                   <Component id="imagemBaralho" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
               <Component id="jPanel2" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -140,14 +140,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                  <Component id="lblNomeJogador" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="99" max="32767" attributes="0"/>
-              </Group>
               <Component id="spCartas1" alignment="0" max="32767" attributes="0"/>
               <Component id="btnJogarCartaDireito" max="32767" attributes="0"/>
               <Component id="btnUnoDireito" alignment="0" max="32767" attributes="0"/>
+              <Component id="lblNomeJogador" alignment="0" pref="248" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -193,6 +189,7 @@
         </Container>
         <Component class="javax.swing.JLabel" name="lblNomeJogador">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Nome Jogador"/>
           </Properties>
         </Component>

@@ -6,8 +6,8 @@ import javax.swing.ImageIcon;
 
 public abstract class Carta {
 
-    String cor;
-    ImageIcon imagem;
+    private String cor;
+    private ImageIcon imagem;
 
     protected Carta(String caminho) throws IOException {
         this.imagem = new ImageIcon(getClass().getResource("/imagens/" + caminho));

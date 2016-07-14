@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import javax.swing.UnsupportedLookAndFeelException;
+import modelo.*;
 
 /**
  *
@@ -25,7 +26,6 @@ public class Principal {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         TelaUno tela = new TelaUno();
         tela.setVisible(true);
 

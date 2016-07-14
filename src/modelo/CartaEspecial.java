@@ -9,7 +9,7 @@ public class CartaEspecial extends Carta {
     public CartaEspecial(String cor, String especial, String caminho) throws IOException {
         super(caminho);
         this.especial = especial;
-        this.cor = cor;
+        super.setCor(cor);
     }
 
     public String getEspecial() {

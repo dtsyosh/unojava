@@ -10,7 +10,7 @@ public class CartaSimbolo extends Carta {
     public CartaSimbolo(String cor, String simbolo, String caminho) throws IOException {
         super(caminho);
         this.simbolo = simbolo;
-        this.cor = cor;
+        super.setCor(cor);
     }
 
     public String getSimbolo() {
