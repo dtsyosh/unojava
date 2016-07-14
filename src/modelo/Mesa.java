@@ -27,8 +27,8 @@ public class Mesa {
     public void iniciarNovoJogo(Jogador jogador1, Jogador jogador2) {
         this.baralho.embaralhar();
         for (int i = 0; i < 7; i++) {
-            jogador1.comprarCarta(this.baralho.darCarta());
-            jogador2.comprarCarta(this.baralho.darCarta());
+            jogador1.comprarCarta();
+            jogador2.comprarCarta();
         }
         
         while(true){    //Garante que a primeira carta será sempre um número
