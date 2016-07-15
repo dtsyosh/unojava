@@ -28,7 +28,7 @@ public class JogadorIA extends Jogador {
 
         //Arrumar ConcurrentModificationException
         do {   //Enquanto não tiver cartas para jogar não sai do loop
-            //for (Iterator<Carta> it = this.mao.iterator(); it.hasNext();) {   //Percorre a mão procurando cartas que podem ser jogadas           
+            //Percorre a mão procurando cartas que podem ser jogadas           
             for (int i = 0; i < this.mao.size(); i++) {
                 cartaAtual = this.mao.get(i);
 
@@ -53,16 +53,38 @@ public class JogadorIA extends Jogador {
                     }
 
                     this.mao.remove(i);
+                    --i; //Para não pular 1 posição no vetor apos a remoção
                 } else if (cartaAtual instanceof CartaNumero && cartaTopoMonte instanceof CartaNumero) { //Verifica se a carta é do tipo CartaNumero
                     if (((CartaNumero) cartaAtual).getNumero() == ((CartaNumero) cartaTopoMonte).getNumero()) { //Pega os números possiveis só que de cores diferentes
                         cartasPossiveis.add(cartaAtual);
+                        switch (cartaAtual.getCor()) {       //Incrementa o vetor de quantidade de cartas
+                            case "Vermelho":
+                                quantidadeCores[1]++;
+                                break;
+                            case "Azul":
+                                quantidadeCores[2]++;
+                                break;
+                            case "Amarelo":
+                                quantidadeCores[3]++;
+                                break;
+                            case "Verde":
+                                quantidadeCores[4]++;
+                                break;
+                            default:
+                                break;
+                        }
                         this.mao.remove(i);
+                        --i;
                     }
                 }
             }
-               
-            this.comprarCarta();
-        } while(cartasPossiveis.isEmpty());
+
+            if (cartasPossiveis.isEmpty()) {
+                this.comprarCarta();
+            } else {
+                break;
+            }
+        } while (true);
         //A partir desse ponto eu ja tenho o vetor cartasPossiveis pronto.
         int maiorIndice, maior, indiceCartaJogada = 0;
         maiorIndice = maior = 0;
@@ -76,8 +98,13 @@ public class JogadorIA extends Jogador {
         for (int i = 0; i < cartasPossiveis.size(); i++) { //Procura no vetor cartasDisponiveis a primeira aparição da cor para jogar
             if (cartasPossiveis.get(i).getCor().equals(cores[maiorIndice])) {
                 cartaJogada = cartasPossiveis.get(i);
-                indiceCartaJogada = i;  //Guarda o indice para usar na hora de retornas as cartas a mao 
+                cartasPossiveis.remove(i);
+                break;
             }
+        }
+
+        for (int i = 0; i < cartasPossiveis.size(); i++) {
+            this.mao.add(cartasPossiveis.get(i));
         }
 
         return cartaJogada;
