@@ -1,19 +1,22 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Jogador {
 
     String nome;
-    ArrayList<Carta> mao;
+    List<Carta> mao;
+    Mesa mesa;
 
-    public Jogador(String nome) {
+    public Jogador(String nome, Mesa mesa) {
         this.nome = nome;
         this.mao = new ArrayList();
+        this.mesa = mesa;
     }
 
-    public void comprarCarta(Carta carta) {
-        this.mao.add(carta);
+    public void comprarCarta() {
+        this.mao.add(mesa.getBaralho().darCarta());
     }
 
     public Carta jogarCarta(int indice) {
@@ -24,7 +27,7 @@ public class Jogador {
         return this.nome;
     }
 
-    public ArrayList<Carta> getMao() {
+    public List<Carta> getMao() {
         return this.mao;
     }
 

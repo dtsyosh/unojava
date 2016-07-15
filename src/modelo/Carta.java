@@ -9,8 +9,8 @@ public abstract class Carta {
     private String cor;
     private ImageIcon imagem;
 
-    protected Carta(String caminho) throws IOException {
-        this.imagem = new ImageIcon(getClass().getResource("/imagens/" + caminho));
+    protected Carta(String arquivo) throws IOException {
+        this.imagem = new ImageIcon(getClass().getResource("/imagens/" + arquivo));
     }
 
     public String getCor() {

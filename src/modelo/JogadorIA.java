@@ -6,6 +6,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -13,57 +14,72 @@ import java.util.ArrayList;
  */
 public class JogadorIA extends Jogador {
 
-    public JogadorIA(String nome) {
-        super(nome);
+    public JogadorIA(String nome, Mesa mesa) {
+        super(nome, mesa);
     }
 
-    public Carta realizarJogada(Carta carta) {     // <-- mesa.verTopoMonte()
-        ArrayList<Carta> cartasPossiveis = new ArrayList();
+    public Carta realizarJogada(Carta cartaTopoMonte) {     // <-- mesa.verTopoMonte()
+        ArrayList<Carta> cartasPossiveis = new ArrayList(); //Vetor que guarda todas as cartas possiveis de serem jogadas
         Carta cartaJogada = null;
-        int i = 0;
+        Carta cartaAtual;
+
         Integer[] quantidadeCores = {0, 0, 0, 0, 0}; //1 Vermelho, 2 Azul, 3 Amarelo, 4 Verde
-        String [] cores = {"", "Vermelho", "Azul", "Amarelo", "Verde"};
-        while(cartasPossiveis.isEmpty()){   //Enquanto não tiver cartas para jogar
-        for (Carta x : this.getMao()) {    //Percorre a mão procurando cartas que podem ser jogadas           
-            if (x.getCor().equals(carta.getCor()) || ((CartaNumero) x).getNumero() == ((CartaNumero) carta).getNumero()) {
-                cartasPossiveis.add(this.getMao().remove(i));
-                
-                switch(x.getCor()){
-                    case "Vermelho":
-                        quantidadeCores[1]++;
-                        break;
-                    case "Azul":
-                        quantidadeCores[2]++;
-                        break;
-                    case "Amarelo":
-                        quantidadeCores[3]++;
-                        break;
-                    case "Verde":
-                        quantidadeCores[4]++;
-                        break;
-                    default:
-                        break;
+        String[] cores = {"", "Vermelho", "Azul", "Amarelo", "Verde"};
+
+        //Arrumar ConcurrentModificationException
+        do {   //Enquanto não tiver cartas para jogar não sai do loop
+            //for (Iterator<Carta> it = this.mao.iterator(); it.hasNext();) {   //Percorre a mão procurando cartas que podem ser jogadas           
+            for (int i = 0; i < this.mao.size(); i++) {
+                cartaAtual = this.mao.get(i);
+
+                if (cartaAtual.getCor().equals(cartaTopoMonte.getCor())) {    //Verifica pela cor, serve para Simbolo/Numero de cores iguais
+                    cartasPossiveis.add(cartaAtual);
+
+                    switch (cartaAtual.getCor()) {       //Incrementa o vetor de quantidade de cartas
+                        case "Vermelho":
+                            quantidadeCores[1]++;
+                            break;
+                        case "Azul":
+                            quantidadeCores[2]++;
+                            break;
+                        case "Amarelo":
+                            quantidadeCores[3]++;
+                            break;
+                        case "Verde":
+                            quantidadeCores[4]++;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    this.mao.remove(i);
+                } else if (cartaAtual instanceof CartaNumero && cartaTopoMonte instanceof CartaNumero) { //Verifica se a carta é do tipo CartaNumero
+                    if (((CartaNumero) cartaAtual).getNumero() == ((CartaNumero) cartaTopoMonte).getNumero()) { //Pega os números possiveis só que de cores diferentes
+                        cartasPossiveis.add(cartaAtual);
+                        this.mao.remove(i);
+                    }
                 }
             }
-            i++;
-            //Achar uma forma de comprar carta
-        }
-        }
+               
+            this.comprarCarta();
+        } while(cartasPossiveis.isEmpty());
         //A partir desse ponto eu ja tenho o vetor cartasPossiveis pronto.
-        int maiorIndice, maior;
+        int maiorIndice, maior, indiceCartaJogada = 0;
         maiorIndice = maior = 0;
-        
-        for(i = 1; i <= 4; i++){ //Acha a maior cor com mais cartas correspondentes
-            if(quantidadeCores[i] > maior){
+
+        for (int i = 1; i <= 4; i++) { //Acha a cor com mais cartas correspondentes
+            if (quantidadeCores[i] > maior) {
                 maiorIndice = i;
                 maior = quantidadeCores[i];
             }
         }
-        for(Carta x : cartasPossiveis){ //Procura no vetor cartasDisponiveis a primeira aparição da cor para jogar
-            if(x.getCor().equals(cores[maiorIndice]))
-                cartaJogada = x;
+        for (int i = 0; i < cartasPossiveis.size(); i++) { //Procura no vetor cartasDisponiveis a primeira aparição da cor para jogar
+            if (cartasPossiveis.get(i).getCor().equals(cores[maiorIndice])) {
+                cartaJogada = cartasPossiveis.get(i);
+                indiceCartaJogada = i;  //Guarda o indice para usar na hora de retornas as cartas a mao 
+            }
         }
-        
+
         return cartaJogada;
     }
 

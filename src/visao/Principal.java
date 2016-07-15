@@ -6,6 +6,8 @@
 package visao;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -28,6 +30,25 @@ public class Principal {
         }
         TelaUno tela = new TelaUno();
         tela.setVisible(true);
+
+        ArrayList<Carta> teste = new ArrayList();
+
+        Carta carta = new CartaNumero("Azul", 1, "b1.jpg");
+        Carta carta2 = new CartaNumero("Vermelho", 2, "r2.jpg");
+        Carta carta3 = new CartaNumero("Azul", 3, "b3.jpg");
+
+        teste.add(carta);
+        teste.add(carta2);
+        teste.add(carta3);
+
+        for (int i = 0; i < teste.size(); i++) {
+            if (i == 1) {
+                teste.remove(i);
+            }
+        }
+        for (Carta x : teste) {
+            System.out.println(x.getCor());
+        }
 
     }
 
