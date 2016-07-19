@@ -71,21 +71,16 @@ public class JogadorIA extends Jogador {
                         default:
                             break;
                     }
+                    
                     this.mao.remove(i);
                     --i;
                 }
             }
         }
 
-        if (cartasPossiveis.isEmpty()) //Se não tiver carta para jogar, compra e termina o turno
-        {
-            this.comprarCarta();
-        } else {                    //Se tiver carta, joga
-
-            //A partir desse ponto eu ja tenho o vetor cartasPossiveis pronto.
+        if (!cartasPossiveis.isEmpty()) { //Se tiver carta para jogar, jogue
             int maiorIndice, maior, indiceCartaJogada = 0;
             maiorIndice = maior = 0;
-
             for (int i = 1; i <= 4; i++) { //Acha a cor com mais cartas correspondentes
                 if (quantidadeCores[i] > maior) {
                     maiorIndice = i;
@@ -99,12 +94,13 @@ public class JogadorIA extends Jogador {
                     break;
                 }
             }
-
-            for (int i = 0; i < cartasPossiveis.size(); i++) {
-                this.mao.add(cartasPossiveis.get(i));
+            for (int i = 0; i < cartasPossiveis.size(); i++) {  //Repreenchendo a mão do jogador com as cartas que
+                this.mao.add(cartasPossiveis.get(i));           //foram previamente tiradas
             }
-
             this.mesa.colocaNoTopoMonte(cartaJogada);
+            
+        } else {    //Senão, compre uma carta.
+            this.comprarCarta();
         }
     }
 

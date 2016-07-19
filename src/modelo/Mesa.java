@@ -39,4 +39,17 @@ public class Mesa {
                 this.baralho.adicionarCartas(this.baralho.darCarta());
         }
     }
+    
+    public boolean validarJogada(Carta cartaMao, Carta topo){
+        if(cartaMao.getCor().equals(topo.getCor()))
+            return true;
+        else
+            if(topo instanceof CartaNumero){
+                if(cartaMao instanceof CartaNumero)
+                    if(((CartaNumero) cartaMao).getNumero() == ((CartaNumero)topo).getNumero())
+                        return true;
+               
+            }
+        return false;
+    }
 }

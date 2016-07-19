@@ -30,7 +30,7 @@ public class Principal {
         }
         TelaUno tela = new TelaUno();
         tela.setVisible(true);
-
+        /*
         ArrayList<Carta> teste = new ArrayList();
 
         Carta carta = new CartaNumero("Azul", 1, "b1.jpg");
@@ -39,17 +39,23 @@ public class Principal {
 
         teste.add(carta);
         teste.add(carta2);
+        teste.add(carta2);
         teste.add(carta3);
 
+        for (Carta x : teste) {
+            System.out.println(x.getCor());
+        }
+        System.out.println("");
         for (int i = 0; i < teste.size(); i++) {
-            if (i == 1) {
+            if (teste.get(i).getCor().equals("Vermelho")) {
                 teste.remove(i);
+                --i;
             }
         }
         for (Carta x : teste) {
             System.out.println(x.getCor());
         }
-
+        */
     }
 
 }

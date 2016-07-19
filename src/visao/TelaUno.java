@@ -1,12 +1,19 @@
 package visao;
 
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.print.DocFlavor;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import modelo.*;
 
 /**
@@ -53,13 +60,17 @@ public class TelaUno extends javax.swing.JFrame {
         }
         
         //Carregando as imagens
+       
+       
         ImageIcon iconeBaralho = new ImageIcon(getClass().getResource("/imagens/verso.png"));
+        imgCortada.setText("");
+        
         imagemBaralho.setIcon( ajustarImagem(iconeBaralho));
         imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
         imagemBaralho.setText("");
         imagemMonte.setText("");
-        
-        
+
+
         btnJogarCartaDireito.setEnabled(false);
         btnUnoDireito.setEnabled(false);
     }
@@ -85,11 +96,13 @@ public class TelaUno extends javax.swing.JFrame {
         lblNomeJogador = new javax.swing.JLabel();
         btnJogarCartaDireito = new javax.swing.JButton();
         btnUnoDireito = new javax.swing.JButton();
-        imagemMonte = new javax.swing.JLabel();
         imagemBaralho = new javax.swing.JLabel();
+        imagemMonte = new javax.swing.JLabel();
+        imgCortada = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         listCartasEsquerdo.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -133,6 +146,8 @@ public class TelaUno extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 12, -1, -1));
+
         listCartasDireito.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -149,6 +164,11 @@ public class TelaUno extends javax.swing.JFrame {
         lblNomeJogador.setText("Nome Jogador");
 
         btnJogarCartaDireito.setText("Jogar Carta");
+        btnJogarCartaDireito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnJogarCartaDireitoMouseReleased(evt);
+            }
+        });
         btnJogarCartaDireito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnJogarCartaDireitoActionPerformed(evt);
@@ -164,7 +184,7 @@ public class TelaUno extends javax.swing.JFrame {
             .addComponent(spCartas1)
             .addComponent(btnJogarCartaDireito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnUnoDireito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblNomeJogador, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+            .addComponent(lblNomeJogador, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,9 +199,7 @@ public class TelaUno extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        imagemMonte.setText("imagemMonte");
-        imagemMonte.setMaximumSize(new java.awt.Dimension(80, 130));
-        imagemMonte.setMinimumSize(new java.awt.Dimension(80, 130));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(519, 12, -1, -1));
 
         imagemBaralho.setText("imagemBaralho");
         imagemBaralho.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -192,36 +210,15 @@ public class TelaUno extends javax.swing.JFrame {
                 imagemBaralhoMouseEntered(evt);
             }
         });
+        getContentPane().add(imagemBaralho, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, -1, 170));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(98, 98, 98)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imagemMonte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(imagemBaralho))
-                .addGap(98, 98, 98)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(imagemMonte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(imagemBaralho))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        imagemMonte.setText("imagemMonte");
+        imagemMonte.setMaximumSize(new java.awt.Dimension(80, 130));
+        imagemMonte.setMinimumSize(new java.awt.Dimension(80, 130));
+        getContentPane().add(imagemMonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, 150));
+
+        imgCortada.setText("imgCortada");
+        getContentPane().add(imgCortada, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -236,11 +233,13 @@ public class TelaUno extends javax.swing.JFrame {
         */
         //---- Joga
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
+        imgCortada.setIcon(mesa.verTopoMonte().getImagem());
+        
         //----
         //-----Remove a carta da lista e atualiza a imagem do monte
         listaDireito.remove( listCartasDireito.getSelectedIndex());
         imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
-        
+
         //-----
         computador.realizarJogada(mesa.verTopoMonte());
         imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
@@ -264,11 +263,16 @@ public class TelaUno extends javax.swing.JFrame {
     }//GEN-LAST:event_imagemBaralhoMouseEntered
 
     private void listCartasDireitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCartasDireitoMouseClicked
+        //Se a carta selecionada puder ser jogada o botão é habilitado
         if(mesa.validarJogada(jogador.getMao().get(listCartasDireito.getSelectedIndex()), mesa.verTopoMonte()))
             btnJogarCartaDireito.setEnabled(true);
         else
             btnJogarCartaDireito.setEnabled(false);
     }//GEN-LAST:event_listCartasDireitoMouseClicked
+
+    private void btnJogarCartaDireitoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnJogarCartaDireitoMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnJogarCartaDireitoMouseReleased
 
     private String exibirCarta(Carta x){	//Função que exibe as informaçães da carta
         if(x instanceof CartaNumero){
@@ -296,6 +300,7 @@ public class TelaUno extends javax.swing.JFrame {
     private javax.swing.JButton btnUnoEsquerdo;
     private javax.swing.JLabel imagemBaralho;
     private javax.swing.JLabel imagemMonte;
+    private javax.swing.JLabel imgCortada;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblCartas;
