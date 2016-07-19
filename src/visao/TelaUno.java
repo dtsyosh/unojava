@@ -244,38 +244,23 @@ public class TelaUno extends javax.swing.JFrame {
         imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
 
         //-----
-        computador.realizarJogada(mesa.verTopoMonte());
-        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-        listaEsquerdo.clear();
-        for (int i = 1; i <= computador.getMao().size(); i++) {
-            listaEsquerdo.addElement("Carta " + i);
-
-        }
+        turnoComputador();
+        //Caso o computador jogue varios bloqueios, voltas ou +2 seguidos é necessário um loop até que seja possivel
+        //o jogador jogar
         while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
-            if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) {
+            if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) { //Se a carta for um +2
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                System.out.println("+2 entrou");
-                computador.realizarJogada(mesa.verTopoMonte());
-                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-                listaEsquerdo.clear();
-                for (int i = 1; i <= computador.getMao().size(); i++) {
-                    listaEsquerdo.addElement("Carta " + i);
-                }
                 ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
-            } else {
-                computador.realizarJogada(mesa.verTopoMonte());
-                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-                listaEsquerdo.clear();
-                for (int i = 1; i <= computador.getMao().size(); i++) {
-                    listaEsquerdo.addElement("Carta " + i);
-                }
+                //Apois o jogador comprar 2 cartas, a carta perde o efeito e o computador joga novamente
+                turnoComputador();
+
+            } else { //Se for um bloqueio/volta a carta perde o efeito e o computador joga novamente
                 ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                turnoComputador();
+
             }
         }
         btnJogarCartaDireito.setEnabled(false);
@@ -287,10 +272,14 @@ public class TelaUno extends javax.swing.JFrame {
 
         computador.realizarJogada(mesa.verTopoMonte());
         imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-        try{ imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-        }catch(ArrayIndexOutOfBoundsException e){}
+        try {
+            imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
         listaEsquerdo.clear();
-        for (int i = 1; i <= computador.getMao().size(); i++)  listaEsquerdo.addElement("Carta " + i);
+        for (int i = 1; i <= computador.getMao().size(); i++) {
+            listaEsquerdo.addElement("Carta " + i);
+        }
 
         while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
             if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) {
@@ -298,29 +287,21 @@ public class TelaUno extends javax.swing.JFrame {
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                System.out.println("+2 entrou");
-                computador.realizarJogada(mesa.verTopoMonte());
-                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-                listaEsquerdo.clear();
-                for (int i = 1; i <= computador.getMao().size(); i++) {
-                    listaEsquerdo.addElement("Carta " + i);
-                }
                 ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                
+                
+                turnoComputador();
+                
+                
             } else {
-                computador.realizarJogada(mesa.verTopoMonte());
-                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-                listaEsquerdo.clear();
-                for (int i = 1; i <= computador.getMao().size(); i++) {
-                    listaEsquerdo.addElement("Carta " + i);
-                }
                 ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                turnoComputador();
+                
             }
         }
 
     }//GEN-LAST:event_imagemBaralhoMouseClicked
-    
+
     private void imagemBaralhoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseEntered
         imagemBaralho.setToolTipText(Integer.toString(mesa.getBaralho().getCartas().size()));
     }//GEN-LAST:event_imagemBaralhoMouseEntered
@@ -339,11 +320,12 @@ public class TelaUno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnJogarCartaDireitoMouseReleased
 
     private void imagemMonteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemMonteMouseEntered
-        if(mesa.verTopoMonte() instanceof CartaSimbolo){
-            if(((CartaSimbolo)mesa.verTopoMonte()).getEfeito() == 1)
+        if (mesa.verTopoMonte() instanceof CartaSimbolo) {
+            if (((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
                 imagemMonte.setToolTipText("Efeito ativo");
-            else
+            } else {
                 imagemMonte.setToolTipText("Efeito inativo");
+            }
         }
     }//GEN-LAST:event_imagemMonteMouseEntered
 
@@ -363,6 +345,16 @@ public class TelaUno extends javax.swing.JFrame {
     private ImageIcon ajustarImagem(ImageIcon imagem) {
         imagem.setImage(imagem.getImage().getScaledInstance(93, 139, Image.SCALE_SMOOTH));
         return imagem;
+    }
+
+    private void turnoComputador() {
+        computador.realizarJogada(mesa.verTopoMonte());
+        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+        listaEsquerdo.clear();
+        for (int i = 1; i <= computador.getMao().size(); i++) {
+            listaEsquerdo.addElement("Carta " + i);
+        }
     }
 
     public static void main(String[] args) throws IOException {
