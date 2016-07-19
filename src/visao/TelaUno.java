@@ -14,6 +14,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import static javax.swing.UIManager.getSystemLookAndFeelClassName;
+import javax.swing.UnsupportedLookAndFeelException;
 import modelo.*;
 
 /**
@@ -30,46 +33,41 @@ public class TelaUno extends javax.swing.JFrame {
     private Jogador jogador;
     private JogadorIA computador;
     private Mesa mesa;
-    
+
     public TelaUno() throws IOException {
         initComponents();
-        
+
         //Inicialização das classes que tornam possível a adição na lista
         listCartasEsquerdo.setModel(new DefaultListModel());
         listCartasDireito.setModel(new DefaultListModel());
         listaDireito = (DefaultListModel) listCartasDireito.getModel();
         listaEsquerdo = (DefaultListModel) listCartasEsquerdo.getModel();
-        
-        
+
         //Inicializando variáveis
         baralho = new Baralho();
         mesa = new Mesa(baralho);
         jogador = new Jogador(JOptionPane.showInputDialog("Digite seu nome"), mesa);
         lblNomeJogador.setText(jogador.getNome());
         computador = new JogadorIA("Computador", mesa);
-        
-        
+
         //Criando novo jogo
         mesa.iniciarNovoJogo(jogador, computador);
         //Preenchendo listas
-        for(Carta x : jogador.getMao()){
+        for (Carta x : jogador.getMao()) {
             listaDireito.addElement(exibirCarta(x));
         }
-        for(int i = 1; i <= computador.getMao().size(); i++){
+        for (int i = 1; i <= computador.getMao().size(); i++) {
             listaEsquerdo.addElement("Carta " + i);
         }
-        
+
         //Carregando as imagens
-       
-       
         ImageIcon iconeBaralho = new ImageIcon(getClass().getResource("/imagens/verso.png"));
         imgCortada.setText("");
-        
-        imagemBaralho.setIcon( ajustarImagem(iconeBaralho));
-        imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
+
+        imagemBaralho.setIcon(ajustarImagem(iconeBaralho));
+        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
         imagemBaralho.setText("");
         imagemMonte.setText("");
-
 
         btnJogarCartaDireito.setEnabled(false);
         btnUnoDireito.setEnabled(false);
@@ -230,32 +228,32 @@ public class TelaUno extends javax.swing.JFrame {
         *   Verificar se ela pode ser jogada
         *   Jogar a carta
         *   Tirar a carta da lista/mão do jogador
-        */
+         */
         //---- Joga
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
-        imgCortada.setIcon(mesa.verTopoMonte().getImagem());
-        
+
         //----
         //-----Remove a carta da lista e atualiza a imagem do monte
-        listaDireito.remove( listCartasDireito.getSelectedIndex());
-        imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
-
+        listaDireito.remove(listCartasDireito.getSelectedIndex());
+        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
         //-----
         computador.realizarJogada(mesa.verTopoMonte());
-        imagemMonte.setIcon( ajustarImagem(mesa.verTopoMonte().getImagem()));
+        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
         listaEsquerdo.clear();
         //for(int i = 1; i <= computador.getMao().size(); i++){
-            //listaEsquerdo.addElement("Carta " + i);       Descomentar depois
-        for(Carta x : computador.getMao()){
+        //listaEsquerdo.addElement("Carta " + i);       Descomentar depois
+        for (Carta x : computador.getMao()) {
             listaEsquerdo.addElement(exibirCarta(x));
         }
-        
+
         btnJogarCartaDireito.setEnabled(false);
     }//GEN-LAST:event_btnJogarCartaDireitoActionPerformed
 
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
         jogador.comprarCarta();
-        listaDireito.addElement( exibirCarta(jogador.getMao().get(jogador.getMao().size()-1)));
+        listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
     }//GEN-LAST:event_imagemBaralhoMouseClicked
 
     private void imagemBaralhoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseEntered
@@ -264,35 +262,40 @@ public class TelaUno extends javax.swing.JFrame {
 
     private void listCartasDireitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCartasDireitoMouseClicked
         //Se a carta selecionada puder ser jogada o botão é habilitado
-        if(mesa.validarJogada(jogador.getMao().get(listCartasDireito.getSelectedIndex()), mesa.verTopoMonte()))
+        if (mesa.validarJogada(jogador.getMao().get(listCartasDireito.getSelectedIndex()), mesa.verTopoMonte())) {
             btnJogarCartaDireito.setEnabled(true);
-        else
+        } else {
             btnJogarCartaDireito.setEnabled(false);
+        }
     }//GEN-LAST:event_listCartasDireitoMouseClicked
 
     private void btnJogarCartaDireitoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnJogarCartaDireitoMouseReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_btnJogarCartaDireitoMouseReleased
 
-    private String exibirCarta(Carta x){	//Função que exibe as informaçães da carta
-        if(x instanceof CartaNumero){
-            CartaNumero k = (CartaNumero)x;
+    private String exibirCarta(Carta x) {	//Função que exibe as informaçães da carta
+        if (x instanceof CartaNumero) {
+            CartaNumero k = (CartaNumero) x;
             return k.getNumero() + " " + k.getCor();
-        }else
-            if(x instanceof CartaSimbolo){
-                CartaSimbolo k = (CartaSimbolo)x;
+        } else {
+            if (x instanceof CartaSimbolo) {
+                CartaSimbolo k = (CartaSimbolo) x;
                 return k.getSimbolo() + " " + k.getCor();
-            }else{
-                    CartaEspecial k = (CartaEspecial)x;
-                    return k.getEspecial();
-		 }
+            } else {
+                CartaEspecial k = (CartaEspecial) x;
+                return k.getEspecial();
+            }
+        }
     }
-    
-    private ImageIcon ajustarImagem(ImageIcon imagem){
+
+    private ImageIcon ajustarImagem(ImageIcon imagem) {
         imagem.setImage(imagem.getImage().getScaledInstance(93, 139, Image.SCALE_SMOOTH));
         return imagem;
     }
 
+    public static void main(String [] args) throws IOException{
+        new TelaUno().setVisible(true);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnJogarCartaDireito;
     private javax.swing.JButton btnJogarCartaEsquerdo;

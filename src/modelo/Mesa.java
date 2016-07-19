@@ -52,4 +52,8 @@ public class Mesa {
             }
         return false;
     }
+    
+    public Stack<Carta> getMonteCarta(){
+        return this.monteCarta;
+    }
 }
