@@ -4,12 +4,14 @@ import java.io.IOException;
 
 public class CartaEspecial extends Carta {
 
-    String especial; //pode ser "+4" "Escolhe cor"
+    private String especial; //pode ser "+4" "Escolhe cor"
+    private boolean efeito;
 
     public CartaEspecial(String cor, String especial, String caminho) throws IOException {
         super(caminho);
         this.especial = especial;
         super.setCor(cor);
+        this.efeito = true;
     }
 
     public String getEspecial() {

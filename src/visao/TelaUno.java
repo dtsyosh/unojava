@@ -237,15 +237,15 @@ public class TelaUno extends javax.swing.JFrame {
         listaDireito.remove(listCartasDireito.getSelectedIndex());
         imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
         imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+
         //-----
         computador.realizarJogada(mesa.verTopoMonte());
         imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
         imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
         listaEsquerdo.clear();
-        //for(int i = 1; i <= computador.getMao().size(); i++){
-        //listaEsquerdo.addElement("Carta " + i);       Descomentar depois
-        for (Carta x : computador.getMao()) {
-            listaEsquerdo.addElement(exibirCarta(x));
+        for (int i = 1; i <= computador.getMao().size(); i++) {
+            listaEsquerdo.addElement("Carta " + i);
+
         }
 
         btnJogarCartaDireito.setEnabled(false);
@@ -254,6 +254,17 @@ public class TelaUno extends javax.swing.JFrame {
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
         jogador.comprarCarta();
         listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+
+        computador.realizarJogada(mesa.verTopoMonte());
+        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+        listaEsquerdo.clear();
+        for (int i = 1; i <= computador.getMao().size(); i++) {
+            listaEsquerdo.addElement("Carta " + i);
+
+        }
+
+
     }//GEN-LAST:event_imagemBaralhoMouseClicked
 
     private void imagemBaralhoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseEntered
@@ -277,14 +288,12 @@ public class TelaUno extends javax.swing.JFrame {
         if (x instanceof CartaNumero) {
             CartaNumero k = (CartaNumero) x;
             return k.getNumero() + " " + k.getCor();
+        } else if (x instanceof CartaSimbolo) {
+            CartaSimbolo k = (CartaSimbolo) x;
+            return k.getSimbolo() + " " + k.getCor();
         } else {
-            if (x instanceof CartaSimbolo) {
-                CartaSimbolo k = (CartaSimbolo) x;
-                return k.getSimbolo() + " " + k.getCor();
-            } else {
-                CartaEspecial k = (CartaEspecial) x;
-                return k.getEspecial();
-            }
+            CartaEspecial k = (CartaEspecial) x;
+            return k.getEspecial();
         }
     }
 
@@ -293,7 +302,7 @@ public class TelaUno extends javax.swing.JFrame {
         return imagem;
     }
 
-    public static void main(String [] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         new TelaUno().setVisible(true);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
