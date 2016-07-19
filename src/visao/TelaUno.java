@@ -213,6 +213,11 @@ public class TelaUno extends javax.swing.JFrame {
         imagemMonte.setText("imagemMonte");
         imagemMonte.setMaximumSize(new java.awt.Dimension(80, 130));
         imagemMonte.setMinimumSize(new java.awt.Dimension(80, 130));
+        imagemMonte.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                imagemMonteMouseEntered(evt);
+            }
+        });
         getContentPane().add(imagemMonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, 150));
 
         imgCortada.setText("imgCortada");
@@ -247,7 +252,32 @@ public class TelaUno extends javax.swing.JFrame {
             listaEsquerdo.addElement("Carta " + i);
 
         }
-
+        while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
+            if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) {
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                System.out.println("+2 entrou");
+                computador.realizarJogada(mesa.verTopoMonte());
+                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+                listaEsquerdo.clear();
+                for (int i = 1; i <= computador.getMao().size(); i++) {
+                    listaEsquerdo.addElement("Carta " + i);
+                }
+                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+            } else {
+                computador.realizarJogada(mesa.verTopoMonte());
+                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+                listaEsquerdo.clear();
+                for (int i = 1; i <= computador.getMao().size(); i++) {
+                    listaEsquerdo.addElement("Carta " + i);
+                }
+                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+            }
+        }
         btnJogarCartaDireito.setEnabled(false);
     }//GEN-LAST:event_btnJogarCartaDireitoActionPerformed
 
@@ -257,16 +287,40 @@ public class TelaUno extends javax.swing.JFrame {
 
         computador.realizarJogada(mesa.verTopoMonte());
         imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+        try{ imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+        }catch(ArrayIndexOutOfBoundsException e){}
         listaEsquerdo.clear();
-        for (int i = 1; i <= computador.getMao().size(); i++) {
-            listaEsquerdo.addElement("Carta " + i);
+        for (int i = 1; i <= computador.getMao().size(); i++)  listaEsquerdo.addElement("Carta " + i);
 
+        while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
+            if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) {
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                System.out.println("+2 entrou");
+                computador.realizarJogada(mesa.verTopoMonte());
+                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+                listaEsquerdo.clear();
+                for (int i = 1; i <= computador.getMao().size(); i++) {
+                    listaEsquerdo.addElement("Carta " + i);
+                }
+                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+            } else {
+                computador.realizarJogada(mesa.verTopoMonte());
+                imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+                imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+                listaEsquerdo.clear();
+                for (int i = 1; i <= computador.getMao().size(); i++) {
+                    listaEsquerdo.addElement("Carta " + i);
+                }
+                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+            }
         }
 
-
     }//GEN-LAST:event_imagemBaralhoMouseClicked
-
+    
     private void imagemBaralhoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseEntered
         imagemBaralho.setToolTipText(Integer.toString(mesa.getBaralho().getCartas().size()));
     }//GEN-LAST:event_imagemBaralhoMouseEntered
@@ -283,6 +337,15 @@ public class TelaUno extends javax.swing.JFrame {
     private void btnJogarCartaDireitoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnJogarCartaDireitoMouseReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_btnJogarCartaDireitoMouseReleased
+
+    private void imagemMonteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemMonteMouseEntered
+        if(mesa.verTopoMonte() instanceof CartaSimbolo){
+            if(((CartaSimbolo)mesa.verTopoMonte()).getEfeito() == 1)
+                imagemMonte.setToolTipText("Efeito ativo");
+            else
+                imagemMonte.setToolTipText("Efeito inativo");
+        }
+    }//GEN-LAST:event_imagemMonteMouseEntered
 
     private String exibirCarta(Carta x) {	//Função que exibe as informaçães da carta
         if (x instanceof CartaNumero) {

@@ -5,13 +5,13 @@ import java.io.IOException;
 public class CartaEspecial extends Carta {
 
     private String especial; //pode ser "+4" "Escolhe cor"
-    private boolean efeito;
+    private int efeito;
 
     public CartaEspecial(String cor, String especial, String caminho) throws IOException {
         super(caminho);
         this.especial = especial;
         super.setCor(cor);
-        this.efeito = true;
+        this.efeito = 1;
     }
 
     public String getEspecial() {
@@ -22,4 +22,13 @@ public class CartaEspecial extends Carta {
         this.especial = especial;
     }
 
+    public int getEfeito() {
+        return efeito;
+    }
+
+    public void setEfeito(int efeito) {
+        this.efeito = efeito;
+    }
+
+    
 }

@@ -6,13 +6,13 @@ public class CartaSimbolo extends Carta {
 
     private String simbolo; //deve ser "bloqueio", "inverte" ou "+2"
     private String corEscolhida;
-    private boolean efeito;
+    private int efeito;
 
     public CartaSimbolo(String cor, String simbolo, String caminho) throws IOException {
         super(caminho);
         this.simbolo = simbolo;
         super.setCor(cor);
-        this.efeito = true;
+        this.efeito = 1;
     }
 
     public String getSimbolo() {
@@ -30,6 +30,15 @@ public class CartaSimbolo extends Carta {
     public void setCorEscolhida(String cor){
         this.corEscolhida = cor;
     }
+
+    public int getEfeito() {
+        return efeito;
+    }
+
+    public void setEfeito(int efeito) {
+        this.efeito = efeito;
+    }
+    
     
 
 }

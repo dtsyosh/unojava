@@ -20,15 +20,19 @@ public class JogadorIA extends Jogador {
 
     public void realizarJogada(Carta cartaTopoMonte) {     // <-- mesa.verTopoMonte()
 
-        if (cartaTopoMonte instanceof CartaSimbolo || cartaTopoMonte instanceof CartaEspecial) { 
-            if(cartaTopoMonte instanceof CartaSimbolo){
-                if(!((CartaSimbolo) cartaTopoMonte).getSimbolo().equals("+2")){ //Se não for +2
-                        return;
-                }else {
+        if ((cartaTopoMonte instanceof CartaSimbolo) && (((CartaSimbolo) cartaTopoMonte).getEfeito() == 1)) {
+            if (cartaTopoMonte instanceof CartaSimbolo) {
+                if (!((CartaSimbolo) cartaTopoMonte).getSimbolo().equals("+2")) { //Se não for +2
+                    ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                    return;
+                } else {
                     this.comprarCarta();
                     this.comprarCarta();
+                    ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
                 }
             }
+        } else if ((cartaTopoMonte instanceof CartaEspecial) && (((CartaEspecial) cartaTopoMonte).getEfeito() == 1)) {
+            //implementar
         } else {
             ArrayList<Carta> cartasPossiveis = new ArrayList(); //Vetor que guarda todas as cartas possiveis de serem jogadas
             Carta cartaJogada = null;
