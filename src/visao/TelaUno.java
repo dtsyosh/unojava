@@ -398,15 +398,16 @@ public class TelaUno extends javax.swing.JFrame {
     private void testeEfeitos() {
         if (((mesa.verTopoMonte() instanceof CartaEspecial) && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4"))) {
             if (((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
-                jogador.comprarCarta();
-                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                jogador.comprarCarta();
-                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                jogador.comprarCarta();
-                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                jogador.comprarCarta();
-                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 ((CartaEspecial) mesa.verTopoMonte()).desativarEfeito();
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                
                 
                 
                 turnoComputador();

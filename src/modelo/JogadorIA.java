@@ -201,7 +201,7 @@ public class JogadorIA extends Jogador {
                         maior = quantidadeCores[i];
                     }
                 }
-
+                ((CartaEspecial) this.mao.get(coringaMais4)).ativarEfeito();
                 this.mao.get(coringaMais4).setCor(cores[maiorIndice]);   //Escolho a cor do +4
                 this.mesa.colocaNoTopoMonte(this.mao.get(coringaMais4)); //Jogo o +4
                 this.mao.remove(coringaMais4);   //Removo o +4 da mão

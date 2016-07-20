@@ -30,4 +30,8 @@ public class CartaEspecial extends Carta {
         this.efeito = 0;
     }
 
+    public void ativarEfeito() {
+        this.efeito = 1;
+    }
+
 }
