@@ -249,9 +249,10 @@ public class TelaUno extends javax.swing.JFrame {
          */
         //---- Joga
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
-        if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4"))
+        if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4")) {
             System.out.println("Efeito = " + ((CartaEspecial) mesa.verTopoMonte()).getEfeito());
-                
+        }
+
         if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
             String[] cores = {"Amarelo", "Azul", "Verde", "Vermelho"};
             int opcao = JOptionPane.showOptionDialog(null, "", "Escolha uma cor",
@@ -294,8 +295,14 @@ public class TelaUno extends javax.swing.JFrame {
 
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
         jogador.comprarCarta();
-        listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
         
+        if (mesa.validarJogada(jogador.getMao().get(jogador.getMao().size() - 1), mesa.verTopoMonte(), jogador.getMao())) {
+            mesa.colocaNoTopoMonte(jogador.jogarCarta( jogador.getMao().size() - 1));
+            
+            imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+            imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+        } else
+            listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
         turnoComputador();
 
         while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
@@ -407,9 +414,7 @@ public class TelaUno extends javax.swing.JFrame {
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                
-                
-                
+
                 turnoComputador();
             }
         }

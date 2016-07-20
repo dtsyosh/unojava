@@ -54,14 +54,14 @@ public class Mesa {
                         }
                     } else if (mao.get(i).getCor().equals(topo.getCor())) {
                         return false;
-                    } else if (mao.get(i) instanceof CartaNumero) {
+                    } else if (topo instanceof CartaNumero) {
                         if (mao.get(i) instanceof CartaNumero) {
                             if (((CartaNumero) mao.get(i)).getNumero() == ((CartaNumero) topo).getNumero()) {
                                 return false;
                             }
                         }
 
-                    } else if (mao.get(i) instanceof CartaSimbolo) {
+                    } else if (topo instanceof CartaSimbolo) {
                         if (mao.get(i) instanceof CartaSimbolo) {
                             if (((CartaSimbolo) mao.get(i)).getSimbolo().equals(((CartaSimbolo) topo).getSimbolo())) {
                                 return false;
