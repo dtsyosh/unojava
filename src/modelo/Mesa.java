@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Mesa {
@@ -41,23 +43,52 @@ public class Mesa {
         }
     }
 
-    public boolean validarJogada(Carta cartaMao, Carta topo) {
+    public boolean validarJogada(Carta cartaMao, Carta topo, List<Carta> mao) {
         if (cartaMao instanceof CartaEspecial) {
-            return true;
-        } else {
-            if (cartaMao.getCor().equals(topo.getCor())) {
-                return true;
-            } else {
-                if (topo instanceof CartaNumero) {
-                    if (cartaMao instanceof CartaNumero) {
-                        if (((CartaNumero) cartaMao).getNumero() == ((CartaNumero) topo).getNumero()) {
-                            return true;
+            if (((CartaEspecial) cartaMao).getEspecial().equals("+4")) { //Se for um +4 tem que ver se é a única opção
+                for (int i = 0; i < mao.size(); i++) {
+                    if (mao.get(i) instanceof CartaEspecial) {   //Se houver um coringa,, ja bloqueia a jogada
+                        if (((CartaEspecial) cartaMao).getEspecial().equals("Troca Cor")) {
+                            return false;
+                        } else if (mao.get(i).getCor().equals(topo.getCor())) {
+                            return false;
+                        } else if (mao.get(i) instanceof CartaNumero) {
+                            if (mao.get(i) instanceof CartaNumero) {
+                                if (((CartaNumero) cartaMao).getNumero() == ((CartaNumero) topo).getNumero()) {
+                                    return false;
+                                }
+                            }
+
+                        } else if (mao.get(i) instanceof CartaSimbolo) {
+                            if (mao.get(i) instanceof CartaSimbolo) {
+                                if (((CartaSimbolo) cartaMao).getSimbolo().equals(((CartaSimbolo) topo).getSimbolo())) {
+                                    return false;
+                                }
+                            }
                         }
                     }
+                }
+                return true;
+            }else   //Se for um coringa, ta tudo liberado;
+                return true;
+        }
+        if (cartaMao.getCor().equals(topo.getCor())) {
+            return true;
+        } else if (topo instanceof CartaNumero) {
+            if (cartaMao instanceof CartaNumero) {
+                if (((CartaNumero) cartaMao).getNumero() == ((CartaNumero) topo).getNumero()) {
+                    return true;
+                }
+            }
 
+        } else if (topo instanceof CartaSimbolo) {
+            if (cartaMao instanceof CartaSimbolo) {
+                if (((CartaSimbolo) cartaMao).getSimbolo().equals(((CartaSimbolo) topo).getSimbolo())) {
+                    return true;
                 }
             }
         }
+
         return false;
     }
 

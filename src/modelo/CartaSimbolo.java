@@ -35,8 +35,8 @@ public class CartaSimbolo extends Carta {
         return efeito;
     }
 
-    public void setEfeito(int efeito) {
-        this.efeito = efeito;
+    public void desativarEfeito() {
+        this.efeito = 0;
     }
     
     

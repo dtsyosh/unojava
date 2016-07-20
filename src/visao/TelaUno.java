@@ -34,7 +34,7 @@ public class TelaUno extends javax.swing.JFrame {
     private Jogador jogador;
     private JogadorIA computador;
     private Mesa mesa;
-    private ImageIcon [] quadradinhosCores;
+    private ImageIcon[] quadradinhosCores;
 
     public TelaUno() throws IOException {
         initComponents();
@@ -249,16 +249,19 @@ public class TelaUno extends javax.swing.JFrame {
          */
         //---- Joga
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
-
-        if (mesa.verTopoMonte() instanceof CartaEspecial) {
+        if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4"))
+            System.out.println("Efeito = " + ((CartaEspecial) mesa.verTopoMonte()).getEfeito());
+                
+        if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
             String[] cores = {"Amarelo", "Azul", "Verde", "Vermelho"};
             int opcao = JOptionPane.showOptionDialog(null, "", "Escolha uma cor",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, cores, "");
             mesa.verTopoMonte().setCor(cores[opcao]);
             imgQuadradinho.setIcon(quadradinhosCores[opcao]);
             imgQuadradinho.setVisible(true);
-        }else
+        } else {
             imgQuadradinho.setVisible(false);
+        }
 
         //----
         //-----Remove a carta da lista e atualiza a imagem do monte
@@ -276,12 +279,12 @@ public class TelaUno extends javax.swing.JFrame {
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
                 //Apois o jogador comprar 2 cartas, a carta perde o efeito e o computador joga novamente
                 turnoComputador();
 
             } else { //Se for um bloqueio/volta a carta perde o efeito e o computador joga novamente
-                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
                 turnoComputador();
 
             }
@@ -292,17 +295,8 @@ public class TelaUno extends javax.swing.JFrame {
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
         jogador.comprarCarta();
         listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-
-        computador.realizarJogada(mesa.verTopoMonte());
-        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-        try {
-            imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-        listaEsquerdo.clear();
-        for (int i = 1; i <= computador.getMao().size(); i++) {
-            listaEsquerdo.addElement("Carta " + i);
-        }
+        
+        turnoComputador();
 
         while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
             if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) {
@@ -310,12 +304,12 @@ public class TelaUno extends javax.swing.JFrame {
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
-                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
 
                 turnoComputador();
 
             } else {
-                ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
                 turnoComputador();
 
             }
@@ -329,7 +323,7 @@ public class TelaUno extends javax.swing.JFrame {
 
     private void listCartasDireitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCartasDireitoMouseClicked
         //Se a carta selecionada puder ser jogada o botão é habilitado
-        if (mesa.validarJogada(jogador.getMao().get(listCartasDireito.getSelectedIndex()), mesa.verTopoMonte())) {
+        if (mesa.validarJogada(jogador.getMao().get(listCartasDireito.getSelectedIndex()), mesa.verTopoMonte(), jogador.getMao())) {
             btnJogarCartaDireito.setEnabled(true);
         } else {
             btnJogarCartaDireito.setEnabled(false);
@@ -375,6 +369,48 @@ public class TelaUno extends javax.swing.JFrame {
         listaEsquerdo.clear();
         for (int i = 1; i <= computador.getMao().size(); i++) {
             listaEsquerdo.addElement("Carta " + i);
+        }
+        if (mesa.verTopoMonte() instanceof CartaEspecial) {
+            int opcao;
+            switch (mesa.verTopoMonte().getCor()) {
+                case "Amarelo":
+                    opcao = 0;
+                    break;
+                case "Azul":
+                    opcao = 1;
+                    break;
+                case "Verde":
+                    opcao = 2;
+                    break;
+                default:
+                    opcao = 3;
+                    break;
+            }
+
+            imgQuadradinho.setIcon(quadradinhosCores[opcao]);
+            imgQuadradinho.setVisible(true);
+        } else {
+            imgQuadradinho.setVisible(false);
+        }
+        testeEfeitos();
+    }
+
+    private void testeEfeitos() {
+        if (((mesa.verTopoMonte() instanceof CartaEspecial) && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4"))) {
+            if (((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                jogador.comprarCarta();
+                listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+                ((CartaEspecial) mesa.verTopoMonte()).desativarEfeito();
+                
+                
+                turnoComputador();
+            }
         }
     }
 

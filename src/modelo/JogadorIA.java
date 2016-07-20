@@ -23,12 +23,12 @@ public class JogadorIA extends Jogador {
         if ((cartaTopoMonte instanceof CartaSimbolo) && (((CartaSimbolo) cartaTopoMonte).getEfeito() == 1)) {
             if (cartaTopoMonte instanceof CartaSimbolo) {
                 if (!((CartaSimbolo) cartaTopoMonte).getSimbolo().equals("+2")) { //Se não for +2
-                    ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                    ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
                     return;
                 } else {
                     this.comprarCarta();
                     this.comprarCarta();
-                    ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
+                    ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
                     return;
                 }
             }
@@ -40,7 +40,7 @@ public class JogadorIA extends Jogador {
             this.comprarCarta();
             this.comprarCarta();
             this.comprarCarta();
-            ((CartaEspecial) mesa.verTopoMonte()).setEfeito(0);
+            ((CartaEspecial) mesa.verTopoMonte()).desativarEfeito();
             return;
         }
 
@@ -125,9 +125,91 @@ public class JogadorIA extends Jogador {
             this.mesa.colocaNoTopoMonte(cartaJogada);
 
         } else {    //Senão, compre uma carta.
-            this.comprarCarta();
+            int coringaMais4, coringa;
+            coringa = coringaMais4 = -1;
+            for (int i = 0; i < this.mao.size(); i++) { //Procura por CartasEspeciais
+                cartaAtual = this.mao.get(i);
+                if (cartaAtual instanceof CartaEspecial) {    //Se for carta especial
+                    if (((CartaEspecial) cartaAtual).getEspecial().equals("+4")) {
+                        coringaMais4 = i;
+                    } else {
+                        coringa = i;
+                    }
+                }
+            }
+
+            if (coringa != -1) {  //Se existir um coringa;
+                for (int i = 0; i < this.mao.size(); i++) { //Preenche o vetor de cores para escolher a cor que tem mais cartas
+                    cartaAtual = this.mao.get(i);
+
+                    switch (cartaAtual.getCor()) {       //Incrementa o vetor de quantidade de cartas
+                        case "Vermelho":
+                            quantidadeCores[1]++;
+                            break;
+                        case "Azul":
+                            quantidadeCores[2]++;
+                            break;
+                        case "Amarelo":
+                            quantidadeCores[3]++;
+                            break;
+                        case "Verde":
+                            quantidadeCores[4]++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                int maiorIndice, maior;
+                maiorIndice = maior = 0;
+                for (int i = 1; i <= 4; i++) { //Acha a cor com mais cartas correspondentes
+                    if (quantidadeCores[i] > maior) {
+                        maiorIndice = i;
+                        maior = quantidadeCores[i];
+                    }
+                }
+
+                this.mao.get(coringa).setCor(cores[maiorIndice]);   //Escolho a cor do coringa
+                this.mesa.colocaNoTopoMonte(this.mao.get(coringa)); //Jogo o coringa
+                this.mao.remove(coringa);   //Removo o coringa da mão
+                return;
+            } else if (coringaMais4 != -1) { //Se não existir um coringa mas existir um +4, devo jogá-la
+                for (int i = 0; i < this.mao.size(); i++) { //Preenche o vetor de cores para escolher a cor que tem mais cartas
+                    cartaAtual = this.mao.get(i);
+
+                    switch (cartaAtual.getCor()) {       //Incrementa o vetor de quantidade de cartas
+                        case "Vermelho":
+                            quantidadeCores[1]++;
+                            break;
+                        case "Azul":
+                            quantidadeCores[2]++;
+                            break;
+                        case "Amarelo":
+                            quantidadeCores[3]++;
+                            break;
+                        case "Verde":
+                            quantidadeCores[4]++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                int maiorIndice, maior;
+                maiorIndice = maior = 0;
+                for (int i = 1; i <= 4; i++) { //Acha a cor com mais cartas correspondentes
+                    if (quantidadeCores[i] > maior) {
+                        maiorIndice = i;
+                        maior = quantidadeCores[i];
+                    }
+                }
+
+                this.mao.get(coringaMais4).setCor(cores[maiorIndice]);   //Escolho a cor do +4
+                this.mesa.colocaNoTopoMonte(this.mao.get(coringaMais4)); //Jogo o +4
+                this.mao.remove(coringaMais4);   //Removo o +4 da mão
+                return;
+            } else {
+                this.comprarCarta();
+            }
         }
     }
-
 
 }

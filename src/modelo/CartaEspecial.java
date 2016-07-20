@@ -4,9 +4,8 @@ import java.io.IOException;
 
 public class CartaEspecial extends Carta {
 
-    private String especial; //pode ser "+4" "Escolhe cor"
+    private String especial; //pode ser "+4" "Troca cor"
     private int efeito;
-
 
     public CartaEspecial(String cor, String especial, String caminho) throws IOException {
         super(caminho);
@@ -27,9 +26,8 @@ public class CartaEspecial extends Carta {
         return efeito;
     }
 
-    public void setEfeito(int efeito) {
-        this.efeito = efeito;
+    public void desativarEfeito() {
+        this.efeito = 0;
     }
 
-    
 }
