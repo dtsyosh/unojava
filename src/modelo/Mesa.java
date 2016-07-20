@@ -30,30 +30,38 @@ public class Mesa {
             jogador1.comprarCarta();
             jogador2.comprarCarta();
         }
-        
-        while(true){    //Garante que a primeira carta será sempre um número
-            if(this.baralho.getCartas().get(this.baralho.getCartas().size()-1) instanceof CartaNumero){
+
+        while (true) {    //Garante que a primeira carta será sempre um número
+            if (this.baralho.getCartas().get(this.baralho.getCartas().size() - 1) instanceof CartaNumero) {
                 colocaNoTopoMonte(this.baralho.darCarta());
                 break;
-            }else
+            } else {
                 this.baralho.adicionarCartas(this.baralho.darCarta());
+            }
         }
     }
-    
-    public boolean validarJogada(Carta cartaMao, Carta topo){
-        if(cartaMao.getCor().equals(topo.getCor()))
+
+    public boolean validarJogada(Carta cartaMao, Carta topo) {
+        if (cartaMao instanceof CartaEspecial) {
             return true;
-        else
-            if(topo instanceof CartaNumero){
-                if(cartaMao instanceof CartaNumero)
-                    if(((CartaNumero) cartaMao).getNumero() == ((CartaNumero)topo).getNumero())
-                        return true;
-               
+        } else {
+            if (cartaMao.getCor().equals(topo.getCor())) {
+                return true;
+            } else {
+                if (topo instanceof CartaNumero) {
+                    if (cartaMao instanceof CartaNumero) {
+                        if (((CartaNumero) cartaMao).getNumero() == ((CartaNumero) topo).getNumero()) {
+                            return true;
+                        }
+                    }
+
+                }
             }
+        }
         return false;
     }
-    
-    public Stack<Carta> getMonteCarta(){
+
+    public Stack<Carta> getMonteCarta() {
         return this.monteCarta;
     }
 }

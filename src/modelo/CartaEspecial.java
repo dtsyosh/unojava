@@ -6,7 +6,7 @@ public class CartaEspecial extends Carta {
 
     private String especial; //pode ser "+4" "Escolhe cor"
     private int efeito;
-    private String corEscolhida;
+
 
     public CartaEspecial(String cor, String especial, String caminho) throws IOException {
         super(caminho);
@@ -30,16 +30,6 @@ public class CartaEspecial extends Carta {
     public void setEfeito(int efeito) {
         this.efeito = efeito;
     }
-
-    public String getCorEscolhida() {
-        return corEscolhida;
-    }
-
-    public void setCorEscolhida(String corEscolhida) {
-        this.corEscolhida = corEscolhida;
-    }
-    
-    
 
     
 }
