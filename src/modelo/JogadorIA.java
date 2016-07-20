@@ -32,7 +32,11 @@ public class JogadorIA extends Jogador {
                 }
             }
         } else if ((cartaTopoMonte instanceof CartaEspecial) && (((CartaEspecial) cartaTopoMonte).getEfeito() == 1)) {
-            //implementar
+            this.comprarCarta();
+            this.comprarCarta();
+            this.comprarCarta();
+            this.comprarCarta();
+            ((CartaEspecial) mesa.verTopoMonte()).setEfeito(0);
         } else {
             ArrayList<Carta> cartasPossiveis = new ArrayList(); //Vetor que guarda todas as cartas possiveis de serem jogadas
             Carta cartaJogada = null;

@@ -14,6 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -208,9 +209,10 @@ public class TelaUno extends javax.swing.JFrame {
                 imagemBaralhoMouseEntered(evt);
             }
         });
-        getContentPane().add(imagemBaralho, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, -1, 170));
+        getContentPane().add(imagemBaralho, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 210, -1, 170));
 
         imagemMonte.setText("imagemMonte");
+        imagemMonte.setBorder(null);
         imagemMonte.setMaximumSize(new java.awt.Dimension(80, 130));
         imagemMonte.setMinimumSize(new java.awt.Dimension(80, 130));
         imagemMonte.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -218,10 +220,10 @@ public class TelaUno extends javax.swing.JFrame {
                 imagemMonteMouseEntered(evt);
             }
         });
-        getContentPane().add(imagemMonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, 150));
+        getContentPane().add(imagemMonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, -1, 150));
 
         imgCortada.setText("imgCortada");
-        getContentPane().add(imgCortada, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
+        getContentPane().add(imgCortada, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -236,6 +238,13 @@ public class TelaUno extends javax.swing.JFrame {
          */
         //---- Joga
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
+
+        if (mesa.verTopoMonte() instanceof CartaEspecial) {
+            String[] cores = {"Amarelo", "Azul", "Verde", "Vermelho"};
+            int opcao = JOptionPane.showOptionDialog(null, "", "Escolha uma cor",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, cores, "");
+            mesa.verTopoMonte().setCor(cores[opcao]);
+        }
 
         //----
         //-----Remove a carta da lista e atualiza a imagem do monte
@@ -288,15 +297,13 @@ public class TelaUno extends javax.swing.JFrame {
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
-                
-                
+
                 turnoComputador();
-                
-                
+
             } else {
                 ((CartaSimbolo) mesa.verTopoMonte()).setEfeito(0);
                 turnoComputador();
-                
+
             }
         }
 
