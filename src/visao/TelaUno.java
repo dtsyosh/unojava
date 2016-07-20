@@ -34,6 +34,7 @@ public class TelaUno extends javax.swing.JFrame {
     private Jogador jogador;
     private JogadorIA computador;
     private Mesa mesa;
+    private ImageIcon [] quadradinhosCores;
 
     public TelaUno() throws IOException {
         initComponents();
@@ -62,6 +63,12 @@ public class TelaUno extends javax.swing.JFrame {
         }
 
         //Carregando as imagens
+        quadradinhosCores = new ImageIcon[4];
+        quadradinhosCores[0] = new ImageIcon(getClass().getResource("/imagens/Amarelo.png"));
+        quadradinhosCores[1] = new ImageIcon(getClass().getResource("/imagens/Azul.png"));
+        quadradinhosCores[2] = new ImageIcon(getClass().getResource("/imagens/Verde.png"));
+        quadradinhosCores[3] = new ImageIcon(getClass().getResource("/imagens/Vermelho.png"));
+        imgQuadradinho.setText("");
         ImageIcon iconeBaralho = new ImageIcon(getClass().getResource("/imagens/verso.png"));
         imgCortada.setText("");
 
@@ -98,6 +105,7 @@ public class TelaUno extends javax.swing.JFrame {
         imagemBaralho = new javax.swing.JLabel();
         imagemMonte = new javax.swing.JLabel();
         imgCortada = new javax.swing.JLabel();
+        imgQuadradinho = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -225,6 +233,9 @@ public class TelaUno extends javax.swing.JFrame {
         imgCortada.setText("imgCortada");
         getContentPane().add(imgCortada, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, -1, -1));
 
+        imgQuadradinho.setText("imgQuadradinho");
+        getContentPane().add(imgQuadradinho, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 50, -1, -1));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -244,7 +255,10 @@ public class TelaUno extends javax.swing.JFrame {
             int opcao = JOptionPane.showOptionDialog(null, "", "Escolha uma cor",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, cores, "");
             mesa.verTopoMonte().setCor(cores[opcao]);
-        }
+            imgQuadradinho.setIcon(quadradinhosCores[opcao]);
+            imgQuadradinho.setVisible(true);
+        }else
+            imgQuadradinho.setVisible(false);
 
         //----
         //-----Remove a carta da lista e atualiza a imagem do monte
@@ -375,6 +389,7 @@ public class TelaUno extends javax.swing.JFrame {
     private javax.swing.JLabel imagemBaralho;
     private javax.swing.JLabel imagemMonte;
     private javax.swing.JLabel imgCortada;
+    private javax.swing.JLabel imgQuadradinho;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblCartas;
