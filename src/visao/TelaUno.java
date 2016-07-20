@@ -403,6 +403,10 @@ public class TelaUno extends javax.swing.JFrame {
             imgQuadradinho.setVisible(false);
         }
         testeEfeitos();
+        if(computador.getMao().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Você perdeu... que decepção!");
+            this.dispose();
+        }
     }
 
     private void testeEfeitos() {
