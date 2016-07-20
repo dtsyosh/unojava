@@ -252,7 +252,10 @@ public class TelaUno extends javax.swing.JFrame {
         if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4")) {
             System.out.println("Efeito = " + ((CartaEspecial) mesa.verTopoMonte()).getEfeito());
         }
-
+        if(jogador.getMao().isEmpty()){
+            JOptionPane.showMessageDialog(rootPane, "Você venceu, não fez mais do que sua obrigação.");
+            this.dispose();
+        }
         if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
             String[] cores = {"Amarelo", "Azul", "Verde", "Vermelho"};
             int opcao = JOptionPane.showOptionDialog(null, "", "Escolha uma cor",
