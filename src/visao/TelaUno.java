@@ -249,11 +249,9 @@ public class TelaUno extends javax.swing.JFrame {
          */
         //---- Joga
         mesa.colocaNoTopoMonte(jogador.jogarCarta(listCartasDireito.getSelectedIndex()));
-        if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4")) {
-            System.out.println("Efeito = " + ((CartaEspecial) mesa.verTopoMonte()).getEfeito());
-        }
-        if(jogador.getMao().isEmpty()){
-            JOptionPane.showMessageDialog(rootPane, "Você venceu, não fez mais do que sua obrigação.");
+
+        if (jogador.getMao().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Parabéns, você venceu!");
             this.dispose();
         }
         if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
@@ -278,10 +276,15 @@ public class TelaUno extends javax.swing.JFrame {
         //Caso o computador jogue varios bloqueios, voltas ou +2 seguidos é necessário um loop até que seja possivel
         //o jogador jogar
         while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
-            if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) { //Se a carta for um +2
+            if (((CartaSimbolo) mesa.verTopoMonte()).getSimbolo().equals("+2")) {
+
+                //Se a carta for um +2
                 jogador.comprarCarta();
+
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+
                 jogador.comprarCarta();
+
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 ((CartaSimbolo) mesa.verTopoMonte()).desativarEfeito();
                 //Apois o jogador comprar 2 cartas, a carta perde o efeito e o computador joga novamente
@@ -298,14 +301,27 @@ public class TelaUno extends javax.swing.JFrame {
 
     private void imagemBaralhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagemBaralhoMouseClicked
         jogador.comprarCarta();
-        
+
         if (mesa.validarJogada(jogador.getMao().get(jogador.getMao().size() - 1), mesa.verTopoMonte(), jogador.getMao())) {
-            mesa.colocaNoTopoMonte(jogador.jogarCarta( jogador.getMao().size() - 1));
-            
+            mesa.colocaNoTopoMonte(jogador.jogarCarta(jogador.getMao().size() - 1));
+
             imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
             imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-        } else
+
+            if (mesa.verTopoMonte() instanceof CartaEspecial && ((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
+                String[] cores = {"Amarelo", "Azul", "Verde", "Vermelho"};
+                int opcao = JOptionPane.showOptionDialog(null, "", "Escolha uma cor",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, cores, "");
+                mesa.verTopoMonte().setCor(cores[opcao]);
+                imgQuadradinho.setIcon(quadradinhosCores[opcao]);
+                imgQuadradinho.setVisible(true);
+            } else {
+                imgQuadradinho.setVisible(false);
+            }
+        } else {
             listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
+        }
+
         turnoComputador();
 
         while ((mesa.verTopoMonte() instanceof CartaSimbolo) && ((CartaSimbolo) mesa.verTopoMonte()).getEfeito() == 1) {
@@ -373,39 +389,42 @@ public class TelaUno extends javax.swing.JFrame {
     }
 
     private void turnoComputador() {
-        computador.realizarJogada(mesa.verTopoMonte());
-        imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
-        imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
-        listaEsquerdo.clear();
-        for (int i = 1; i <= computador.getMao().size(); i++) {
-            listaEsquerdo.addElement("Carta " + i);
-        }
-        if (mesa.verTopoMonte() instanceof CartaEspecial) {
-            int opcao;
-            switch (mesa.verTopoMonte().getCor()) {
-                case "Amarelo":
-                    opcao = 0;
-                    break;
-                case "Azul":
-                    opcao = 1;
-                    break;
-                case "Verde":
-                    opcao = 2;
-                    break;
-                default:
-                    opcao = 3;
-                    break;
+        try {
+            computador.realizarJogada(mesa.verTopoMonte());
+            imagemMonte.setIcon(ajustarImagem(mesa.verTopoMonte().getImagem()));
+            imgCortada.setIcon(ajustarImagem(mesa.getMonteCarta().get(mesa.getMonteCarta().size() - 2).getImagem()));
+            listaEsquerdo.clear();
+            for (int i = 1; i <= computador.getMao().size(); i++) {
+                listaEsquerdo.addElement("Carta " + i);
             }
+            if (mesa.verTopoMonte() instanceof CartaEspecial) {
+                int opcao;
+                switch (mesa.verTopoMonte().getCor()) {
+                    case "Amarelo":
+                        opcao = 0;
+                        break;
+                    case "Azul":
+                        opcao = 1;
+                        break;
+                    case "Verde":
+                        opcao = 2;
+                        break;
+                    default:
+                        opcao = 3;
+                        break;
+                }
 
-            imgQuadradinho.setIcon(quadradinhosCores[opcao]);
-            imgQuadradinho.setVisible(true);
-        } else {
-            imgQuadradinho.setVisible(false);
-        }
-        testeEfeitos();
-        if(computador.getMao().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Você perdeu... que decepção!");
-            this.dispose();
+                imgQuadradinho.setIcon(quadradinhosCores[opcao]);
+                imgQuadradinho.setVisible(true);
+            } else {
+                imgQuadradinho.setVisible(false);
+            }
+            testeEfeitos();
+            if (computador.getMao().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Credo, perdeu pra um computador!");
+                this.dispose();
+            }
+        } catch (IOException e) {
         }
     }
 
@@ -413,6 +432,7 @@ public class TelaUno extends javax.swing.JFrame {
         if (((mesa.verTopoMonte() instanceof CartaEspecial) && ((CartaEspecial) mesa.verTopoMonte()).getEspecial().equals("+4"))) {
             if (((CartaEspecial) mesa.verTopoMonte()).getEfeito() == 1) {
                 ((CartaEspecial) mesa.verTopoMonte()).desativarEfeito();
+
                 jogador.comprarCarta();
                 listaDireito.addElement(exibirCarta(jogador.getMao().get(jogador.getMao().size() - 1)));
                 jogador.comprarCarta();
