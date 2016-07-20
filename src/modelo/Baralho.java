@@ -20,7 +20,11 @@ public class Baralho {
     }
     //método responsável pela compra de cartas
 
-    public Carta darCarta() {
+    public Carta darCarta() throws IOException {
+        if (this.getCartas().isEmpty()) {    //Acabaram-se as cartas do baralho
+            this.cartas = criarCartas();
+            Collections.shuffle(this.cartas);
+        }
         return this.cartas.pop();
     }
 
